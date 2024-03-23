@@ -1,6 +1,14 @@
 package com.kampus.kbazaar.product;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import com.kampus.kbazaar.exceptions.NotFoundException;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,22 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
 class ProductServiceTest {
 
-    @Mock
-    private ProductRepository productRepository;
+    @Mock private ProductRepository productRepository;
 
-    @InjectMocks
-    private ProductService productService;
+    @InjectMocks private ProductService productService;
 
     @BeforeEach
     void setUp() {
@@ -34,21 +31,23 @@ class ProductServiceTest {
     @DisplayName("should be able to get all products")
     void shouldBeAbleToGetAllProducts() {
         // Mock data
-        Product product1 = Product.builder()
-                .id(1L)
-                .name("Google Pixel 5")
-                .sku("MOBILE-GOOGLE-PIXEL-5")
-                .price(new BigDecimal(12990.75))
-                .quantity(100)
-                .build();
+        Product product1 =
+                Product.builder()
+                        .id(1L)
+                        .name("Google Pixel 5")
+                        .sku("MOBILE-GOOGLE-PIXEL-5")
+                        .price(new BigDecimal(12990.75))
+                        .quantity(100)
+                        .build();
 
-        Product product2 = Product.builder()
-                .id(1L)
-                .name("Coca-Cola")
-                .sku("BEV-COCA-COLA")
-                .price(new BigDecimal(20.75))
-                .quantity(150)
-                .build();
+        Product product2 =
+                Product.builder()
+                        .id(1L)
+                        .name("Coca-Cola")
+                        .sku("BEV-COCA-COLA")
+                        .price(new BigDecimal(20.75))
+                        .quantity(150)
+                        .build();
         List<Product> productList = Arrays.asList(product1, product2);
 
         // Mock repository method
@@ -80,13 +79,14 @@ class ProductServiceTest {
     @DisplayName("should be able to get product by SKU")
     void shouldBeAbleToGetProductBySku() {
         // Mock data
-        Product product = Product.builder()
-                .id(1L)
-                .name("Pens")
-                .sku("STATIONERY-PEN-BIC-BALLPOINT")
-                .price(new BigDecimal(14.99))
-                .quantity(100)
-                .build();
+        Product product =
+                Product.builder()
+                        .id(1L)
+                        .name("Pens")
+                        .sku("STATIONERY-PEN-BIC-BALLPOINT")
+                        .price(new BigDecimal(14.99))
+                        .quantity(100)
+                        .build();
 
         // Mock repository method
         when(productRepository.findBySku("STATIONERY-PEN-BIC-BALLPOINT"))
