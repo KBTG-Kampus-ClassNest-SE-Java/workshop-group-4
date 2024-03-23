@@ -5,11 +5,19 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
+import java.util.Collections;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.stream.Collectors;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.DefaultParameters;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -25,41 +33,49 @@ public class ProductController {
             responseCode = "200",
             description = "list all products",
             content = {
-                @Content(
-                        mediaType = "application/json",
-                        array =
-                                @ArraySchema(
-                                        schema = @Schema(implementation = ProductResponse.class)))
+                    @Content(
+                            mediaType = "application/json",
+                            array =
+                            @ArraySchema(
+                                    schema = @Schema(implementation = ProductResponse.class)))
             })
     @ApiResponse(
             responseCode = "500",
             description = "internal server error",
             content =
-                    @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundException.class)))
+            @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = NotFoundException.class)))
     @GetMapping("/products")
-    public List<ProductResponse> getProducts() {
-        return productService.getAll();
+
+    public List<ProductResponse> getProducts(
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer limit) {
+
+        Pageable pageable = PageRequest.of(page, limit);
+        return productService.findByNameContaining(name, pageable);
     }
 
     @ApiResponse(
             responseCode = "200",
             description = "get product by sku",
             content = {
-                @Content(
-                        mediaType = "application/json",
-                        schema = @Schema(implementation = ProductResponse.class))
+                    @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProductResponse.class))
             })
     @ApiResponse(
             responseCode = "404",
             description = "product not found",
             content =
-                    @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundException.class)))
+            @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = NotFoundException.class)))
     @GetMapping("/products/{sku}")
     public ProductResponse getProductById(@PathVariable String sku) {
         return productService.getBySku(sku);
     }
+
+
 }
