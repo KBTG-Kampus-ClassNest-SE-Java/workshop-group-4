@@ -1,9 +1,13 @@
 package com.kampus.kbazaar.promotion;
 
+import com.kampus.kbazaar.cart.Cart;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,6 +57,11 @@ public class Promotion {
 
     @Column(name = "free_quantity")
     private Integer freeQuantity;
+
+    @ManyToMany(
+            cascade = {CascadeType.ALL},
+            mappedBy = "promotions")
+    private Set<Cart> carts;
 
     public PromotionResponse toResponse() {
         return new PromotionResponse(

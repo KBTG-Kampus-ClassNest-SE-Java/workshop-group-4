@@ -31,6 +31,14 @@ public class ProductService {
         return product.get().toResponse();
     }
 
+    public Product getProductBySku(String sku) {
+        Optional<Product> product = productRepository.findBySku(sku);
+        if (product.isEmpty()) {
+            throw new NotFoundException("Product not found");
+        }
+        return product.get();
+    }
+
     public List<ProductResponse> findByNameContaining(String name, Pageable pageable) {
         Page<Product> byNameContaining = productRepository.findByNameContaining(name, pageable);
         List<Product> products =

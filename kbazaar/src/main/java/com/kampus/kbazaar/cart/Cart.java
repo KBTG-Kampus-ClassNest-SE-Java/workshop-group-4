@@ -1,16 +1,41 @@
 package com.kampus.kbazaar.cart;
 
 import com.kampus.kbazaar.product.Product;
-import lombok.Data;
+import com.kampus.kbazaar.promotion.Promotion;
+import com.kampus.kbazaar.shopper.Shopper;
+import jakarta.persistence.*;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Cart {
-    private int userID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    private Product[] products;
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> products;
 
-    public Cart(int userID, Product[] products) {
-        this.userID = userID;
-        this.products = products;
-    }
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "cart_promotion",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "promotion_id"))
+    private Set<Promotion> promotions;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shopper_id", referencedColumnName = "id")
+    private Shopper shopper;
 }
