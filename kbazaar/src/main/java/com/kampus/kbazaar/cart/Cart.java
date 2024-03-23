@@ -1,6 +1,5 @@
 package com.kampus.kbazaar.cart;
 
-import com.kampus.kbazaar.product.Product;
 import com.kampus.kbazaar.promotion.Promotion;
 import com.kampus.kbazaar.shopper.Shopper;
 import jakarta.persistence.*;
@@ -21,12 +20,8 @@ public class Cart {
     @Column(name = "id")
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "cart_product",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private Set<CartProduct> products;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -39,9 +34,9 @@ public class Cart {
     @JoinColumn(name = "shopper_id", referencedColumnName = "id")
     private Shopper shopper;
 
-    public Cart addProduct(Product product) {
-        this.products.add(product);
-        product.getCarts().add(this);
+    public Cart addPromotion(Promotion promotion) {
+        this.promotions.add(promotion);
+        promotion.getCarts().add(this);
         return this;
     }
 }

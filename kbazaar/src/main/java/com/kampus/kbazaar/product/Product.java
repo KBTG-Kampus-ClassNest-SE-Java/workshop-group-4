@@ -1,13 +1,11 @@
 package com.kampus.kbazaar.product;
 
-import com.kampus.kbazaar.cart.Cart;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,11 +24,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @ManyToMany(
-            cascade = {CascadeType.ALL},
-            mappedBy = "products")
-    private Set<Cart> carts;
 
     @NotBlank
     @Size(max = 255)
