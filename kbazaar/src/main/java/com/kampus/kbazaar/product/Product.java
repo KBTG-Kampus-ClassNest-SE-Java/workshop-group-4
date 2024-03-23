@@ -6,17 +6,20 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Table(
         name = "product",
         uniqueConstraints = {@UniqueConstraint(columnNames = "sku")})
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -40,10 +43,12 @@ public class Product {
     @Column(name = "sku", nullable = false, unique = true, length = 255)
     private String sku;
 
-    @NotNull @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @NotNull
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @NotNull @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
