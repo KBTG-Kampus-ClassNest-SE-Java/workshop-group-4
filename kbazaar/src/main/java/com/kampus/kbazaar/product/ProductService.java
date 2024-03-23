@@ -1,12 +1,10 @@
 package com.kampus.kbazaar.product;
 
 import com.kampus.kbazaar.exceptions.NotFoundException;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,12 +31,23 @@ public class ProductService {
         return product.get().toResponse();
     }
 
-    public List<ProductResponse> findByNameContaining(String name, Pageable pageable){
+    public List<ProductResponse> findByNameContaining(String name, Pageable pageable) {
         Page<Product> byNameContaining = productRepository.findByNameContaining(name, pageable);
-        List<Product> products = byNameContaining.hasContent() ? byNameContaining.getContent() : Collections.emptyList();
-        List<ProductResponse> collect = products.stream()
-                .map(p -> new ProductResponse(p.getId(), p.getName(), p.getSku(), p.getPrice(), p.getQuantity()))
-                .collect(Collectors.toList());
+        List<Product> products =
+                byNameContaining.hasContent()
+                        ? byNameContaining.getContent()
+                        : Collections.emptyList();
+        List<ProductResponse> collect =
+                products.stream()
+                        .map(
+                                p ->
+                                        new ProductResponse(
+                                                p.getId(),
+                                                p.getName(),
+                                                p.getSku(),
+                                                p.getPrice(),
+                                                p.getQuantity()))
+                        .collect(Collectors.toList());
         return collect;
     }
 }
