@@ -38,4 +38,10 @@ public class Cart {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shopper_id", referencedColumnName = "id")
     private Shopper shopper;
+
+    public Cart addProduct(Product product) {
+        this.products.add(product);
+        product.getCarts().add(this);
+        return this;
+    }
 }
