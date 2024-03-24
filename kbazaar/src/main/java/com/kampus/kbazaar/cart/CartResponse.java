@@ -19,6 +19,7 @@ public class CartResponse {
     private List<String> promotionCodes;
     private BigDecimal totalCost;
     private BigDecimal entireCartPromotionDiscount;
+    private BigDecimal shippingFee;
     private BigDecimal finalTotalCost;
 
     public static CartResponse fromCart(Cart cart) {

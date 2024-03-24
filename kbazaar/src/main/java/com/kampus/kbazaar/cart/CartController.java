@@ -1,6 +1,8 @@
 package com.kampus.kbazaar.cart;
 
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
+
+    @Value("${enabled.shipping.fee:true}")
+    private boolean enableShippingFee;
 
     @GetMapping("/carts")
     public ResponseEntity getCart() { // NOSONAR
@@ -21,11 +26,18 @@ public class CartController {
             @PathVariable("username") String username,
             @RequestBody AddProductRequest addProductRequest) {
 
-        return cartService
-                .addProductByUsernameAndProductSku(
-                        username,
-                        addProductRequest.getProductSku(),
-                        addProductRequest.getQuantity())
-                .toCartResponse();
+        CartResponse cartResponse =
+                cartService
+                        .addProductByUsernameAndProductSku(
+                                username,
+                                addProductRequest.getProductSku(),
+                                addProductRequest.getQuantity())
+                        .toCartResponse();
+
+        if (enableShippingFee) {
+            cartResponse.setShippingFee(new BigDecimal(25));
+        }
+
+        return cartResponse;
     }
 }
