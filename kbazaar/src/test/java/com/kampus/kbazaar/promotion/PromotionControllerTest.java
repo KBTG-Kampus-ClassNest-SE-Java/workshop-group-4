@@ -49,7 +49,7 @@ public class PromotionControllerTest {
         when(promotionService.getAll()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/api/v1/promotions").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk());
     }
 
     @Test

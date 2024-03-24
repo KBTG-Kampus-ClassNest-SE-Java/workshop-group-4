@@ -4,8 +4,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.kampus.kbazaar.promotion.PromotionService;
 import com.kampus.kbazaar.product.Product;
+import com.kampus.kbazaar.promotion.PromotionService;
 import com.kampus.kbazaar.security.JwtAuthFilter;
 import com.kampus.kbazaar.shopper.Shopper;
 import java.math.BigDecimal;
