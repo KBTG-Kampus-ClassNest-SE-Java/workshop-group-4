@@ -1,10 +1,8 @@
 package com.kampus.kbazaar.product;
 
 import com.kampus.kbazaar.exceptions.NotFoundException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -39,23 +37,14 @@ public class ProductService {
         return product.get();
     }
 
-    public List<ProductResponse> findByNameContaining(String name, Pageable pageable) {
-        Page<Product> byNameContaining = productRepository.findByNameContaining(name, pageable);
-        List<Product> products =
-                byNameContaining.hasContent()
-                        ? byNameContaining.getContent()
-                        : Collections.emptyList();
-        List<ProductResponse> collect =
-                products.stream()
-                        .map(
-                                p ->
-                                        new ProductResponse(
-                                                p.getId(),
-                                                p.getName(),
-                                                p.getSku(),
-                                                p.getPrice(),
-                                                p.getQuantity()))
-                        .collect(Collectors.toList());
-        return collect;
+    public GetProductResponse getProductsByName(String name, Pageable pageable) {
+
+        Page<Product> productPage = productRepository.findByNameContaining(name, pageable);
+        return new GetProductResponse(
+                productPage.getContent(),
+                productPage.getNumber(),
+                productPage.getSize(),
+                productPage.getTotalPages(),
+                (int) productPage.getTotalElements());
     }
 }

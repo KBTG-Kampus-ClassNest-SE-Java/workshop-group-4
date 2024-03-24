@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +37,13 @@ public class ProductController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = NotFoundException.class)))
     @GetMapping("/products")
-    public List<ProductResponse> getProducts(
+    public GetProductResponse getProducts(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer limit) {
 
         Pageable pageable = PageRequest.of(page, limit);
-        return productService.findByNameContaining(name, pageable);
+        return productService.getProductsByName(name, pageable);
     }
 
     @ApiResponse(
@@ -66,4 +65,7 @@ public class ProductController {
     public ProductResponse getProductById(@PathVariable String sku) {
         return productService.getBySku(sku);
     }
+
+    // testFindByname
+
 }

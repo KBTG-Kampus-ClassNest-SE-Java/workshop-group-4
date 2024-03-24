@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kampus.kbazaar.security.JwtAuthFilter;
-import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +46,13 @@ public class ProductControllerTest {
     @Test
     @DisplayName("should return all product")
     public void shouldReturnDefaultValue() throws Exception {
-        when(productService.findByNameContaining(any(), any())).thenReturn(new ArrayList<>());
+        when(productService.getProductsByName(any(), any()))
+                .thenReturn(new GetProductResponse(List.of(), 1, 2, 4, 5));
 
         mockMvc.perform(get("/api/v1/products").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(productService, times(1)).findByNameContaining(any(), any());
+        verify(productService, times(1)).getProductsByName(any(), any());
     }
 
     @Test
