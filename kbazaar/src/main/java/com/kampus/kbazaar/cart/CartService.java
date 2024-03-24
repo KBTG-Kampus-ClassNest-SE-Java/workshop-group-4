@@ -4,7 +4,9 @@ import com.kampus.kbazaar.exceptions.InternalServerException;
 import com.kampus.kbazaar.exceptions.NotFoundException;
 import com.kampus.kbazaar.product.Product;
 import com.kampus.kbazaar.product.ProductService;
+import com.kampus.kbazaar.promotion.Promotion;
 import com.kampus.kbazaar.shopper.ShopperService;
+import java.util.ArrayList;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,5 +37,20 @@ public class CartService {
                         () ->
                                 new InternalServerException(
                                         "Product out of stock or failed to add product to cart"));
+    }
+
+    public CartResponse applyDiscount(String username, Promotion promotion) {
+        Cart cart = findCartByUsername(username);
+        cart.addPromotion(promotion);
+        cartRepository.save(cart);
+        return cart.toCartResponse();
+    }
+
+    public Optional<Cart> findCartByShopperId(Long shopperId) {
+        return this.cartRepository.findByShopperId(shopperId);
+    }
+
+    public ArrayList<Product> getProductsByCartId(Long cartId) {
+        return cartRepository.findProductsByCartId(cartId);
     }
 }

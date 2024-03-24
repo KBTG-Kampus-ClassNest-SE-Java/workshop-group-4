@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.kampus.kbazaar.promotion.PromotionService;
 import com.kampus.kbazaar.product.Product;
 import com.kampus.kbazaar.security.JwtAuthFilter;
 import com.kampus.kbazaar.shopper.Shopper;
@@ -39,6 +40,7 @@ public class CartControllerTest {
     @Autowired private MockMvc mockMvc;
 
     @MockBean private CartService cartService;
+    @MockBean private PromotionService promotionService;
 
     @Test
     public void getCart_ReturnsOk() throws Exception {

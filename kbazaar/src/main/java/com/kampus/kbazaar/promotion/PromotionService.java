@@ -22,4 +22,10 @@ public class PromotionService {
                 .map(Promotion::toResponse)
                 .orElseThrow(() -> new NotFoundException("Promotion not found"));
     }
+
+    public Promotion getPromotionsFromCode(String code) {
+        return promotionRepository
+                .findByCode(code)
+                .orElseThrow(() -> new NotFoundException("Promotion not found"));
+    }
 }

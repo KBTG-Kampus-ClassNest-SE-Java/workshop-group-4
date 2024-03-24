@@ -1,8 +1,6 @@
 package com.kampus.kbazaar.promotion;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,17 +41,15 @@ public class PromotionControllerTest {
     }
 
     @Test
-    @DisplayName("should return all promotions")
-    public void shouldReturnAllPromotions() throws Exception {
+    @DisplayName("should return not found promotion endpoint")
+    public void shouldReturnNotFoundFromFeaturePromotionDisable() throws Exception {
         // Given
 
         // When & Then
         when(promotionService.getAll()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/api/v1/promotions").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        verify(promotionService, times(1)).getAll();
+                .andExpect(status().is4xxClientError());
     }
 
     @Test

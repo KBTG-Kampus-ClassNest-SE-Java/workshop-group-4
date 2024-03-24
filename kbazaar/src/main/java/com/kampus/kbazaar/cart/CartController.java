@@ -1,5 +1,8 @@
 package com.kampus.kbazaar.cart;
 
+import com.kampus.kbazaar.promotion.Promotion;
+import com.kampus.kbazaar.promotion.PromotionService;
+import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CartController {
 
+    private final PromotionService promotionService;
     private final CartService cartService;
 
     @Value("${enabled.shipping.fee:true}")
@@ -39,5 +43,13 @@ public class CartController {
         }
 
         return cartResponse;
+    }
+
+    @PostMapping("/carts/{username}/promotions")
+    public CartResponse applyDiscount(
+            @PathVariable("username") String username, @RequestBody @Valid CartRequestDto req) {
+        Promotion promotion = promotionService.getPromotionsFromCode(req.getCode());
+        CartResponse result = this.cartService.applyDiscount(username, promotion);
+        return result;
     }
 }

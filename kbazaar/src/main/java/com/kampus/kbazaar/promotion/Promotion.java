@@ -4,10 +4,7 @@ import com.kampus.kbazaar.cart.Cart;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -61,7 +58,7 @@ public class Promotion {
     @ManyToMany(
             cascade = {CascadeType.ALL},
             mappedBy = "promotions")
-    private Set<Cart> carts;
+    private Set<Cart> carts = new HashSet<>();
 
     public PromotionResponse toResponse() {
         return new PromotionResponse(

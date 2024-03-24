@@ -5,9 +5,7 @@ import com.kampus.kbazaar.promotion.PromotionDiscount;
 import com.kampus.kbazaar.shopper.Shopper;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,14 +23,14 @@ public class Cart {
     private Long id;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartProduct> cartProducts;
+    private List<CartProduct> cartProducts = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "cart_promotion",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "promotion_id"))
-    private Set<Promotion> promotions;
+    private Set<Promotion> promotions = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shopper_id", referencedColumnName = "id")
