@@ -30,4 +30,10 @@ public class ShopperService {
                 .map(Shopper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Shopper not found"));
     }
+
+    public Shopper getShopperByUsername(String username) {
+        return shopperRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("Shopper not found"));
+    }
 }
