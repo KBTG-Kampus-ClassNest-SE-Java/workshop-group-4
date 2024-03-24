@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kampus.kbazaar.security.JwtAuthFilter;
-import com.kampus.kbazaar.shopper.ShopperService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ public class CartControllerTest {
 
     @Autowired private MockMvc mockMvc;
 
-    @MockBean private ShopperService shopperService;
+    @MockBean private CartService cartService;
 
     @InjectMocks private CartController cartController;
 
