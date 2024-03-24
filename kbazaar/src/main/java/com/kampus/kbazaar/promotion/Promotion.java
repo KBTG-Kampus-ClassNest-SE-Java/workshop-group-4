@@ -9,11 +9,13 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "promotion")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Promotion {

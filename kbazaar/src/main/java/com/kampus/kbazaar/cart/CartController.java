@@ -3,7 +3,12 @@ package com.kampus.kbazaar.cart;
 import com.kampus.kbazaar.shopper.ShopperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final ShopperService shopperService;
+    private final CartService cartService;
 
     @GetMapping("/carts")
     public ResponseEntity getCart() { // NOSONAR
@@ -35,5 +41,12 @@ public class CartController {
         //                .toAddProductResponse());
 
         return ResponseEntity.ok("hey");
+    }
+
+    @PostMapping("/carts/{username}/promotions")
+    public ResponseEntity applyPromotionToCart(
+            @PathVariable("username") String username,
+            @RequestBody ApplyPromotionRequest applyPromotionRequest) {
+        return ResponseEntity.ok(cartService.applyPromotionToCart(username, applyPromotionRequest));
     }
 }

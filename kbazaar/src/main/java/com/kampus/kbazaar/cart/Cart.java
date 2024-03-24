@@ -2,7 +2,17 @@ package com.kampus.kbazaar.cart;
 
 import com.kampus.kbazaar.promotion.Promotion;
 import com.kampus.kbazaar.shopper.Shopper;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +31,7 @@ public class Cart {
     private Long id;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private Set<CartProduct> products;
+    private Set<CartProduct> cartProducts;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -35,6 +45,10 @@ public class Cart {
     private Shopper shopper;
 
     public Cart addPromotion(Promotion promotion) {
+        if (!this.promotions.isEmpty()) {
+            this.promotions.clear();
+        }
+
         this.promotions.add(promotion);
         promotion.getCarts().add(this);
         return this;
